@@ -1,40 +1,51 @@
+
 package com.movi.mynotenavegable.salir;
 
-import androidx.lifecycle.ViewModelProvider;
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-
 import com.movi.mynotenavegable.R;
+import com.movi.mynotenavegable.databinding.FragmentSalirBinding;
 
 public class SalirFragment extends Fragment {
 
-    public static SalirFragment newInstance() {
-        return new SalirFragment();
+    private FragmentSalirBinding binding;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        binding = FragmentSalirBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+        mostrarMensaje();
+
+        return root;
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_salir, container, false);
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void mostrarMensaje() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Salida")
+                .setMessage("¿Desea salir de notas?")
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-        Button btnSalir = view.findViewById(R.id.btSalir);
-        btnSalir.setOnClickListener(v -> {
-            // Llama al método para cerrar la aplicación
-            getActivity().finish();
-    });
+                        getActivity().finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .show();
     }
 }

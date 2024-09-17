@@ -1,3 +1,4 @@
+
 package com.movi.mynotenavegable.cargar;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -11,49 +12,36 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import com.movi.mynotenavegable.R;
+import com.movi.mynotenavegable.databinding.FragmentCargarBinding;
+import com.movi.mynotenavegable.databinding.FragmentNotaBinding;
 import com.movi.mynotenavegable.ui.nota.NotaViewModel;
 
 public class CargarFragment extends Fragment {
 
     private CargarViewModel mViewModel;
-    private NotaViewModel notaViewModel;
+    private FragmentCargarBinding binding;
 
-    public static CargarFragment newInstance() {
-        return new CargarFragment();
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_cargar, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         mViewModel = new ViewModelProvider(this).get(CargarViewModel.class);
+        binding = FragmentCargarBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+
+       binding.guardarButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               mViewModel.agregarNota(binding.editTextTitulo.getText().toString(),binding.editTextNota.getText().toString());
+               binding.editTextTitulo.setText("");
+               binding.editTextNota.setText("");
+           }
+       });
 
 
-        notaViewModel = new ViewModelProvider(requireActivity()).get(NotaViewModel.class);
-        mViewModel.setNotaViewModel(notaViewModel);
 
+        return root;
 
-        EditText etTitulo = getView().findViewById(R.id.editTextTitulo);
-        EditText etNota = getView().findViewById(R.id.editTextNota);
-        Button btnGuardar = getView().findViewById(R.id.guardarButton);
-
-        btnGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String titulo = etTitulo.getText().toString();
-                String contenido = etNota.getText().toString();
-                mViewModel.agregarNota(titulo, contenido);
-                etTitulo.setText("");
-                etNota.setText("");
-            }
-        });
     }
-}
 
+}
 
 
